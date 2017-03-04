@@ -15,12 +15,16 @@ module.exports = {
       db.end();
     }, // a function which produces all the messages
     post: function (parsedData, callback) {
+      console.log('we are in post messages');
+      console.log(parsedData);
       var username = parsedData.username;
       var roomname = parsedData.roomname;
       var message = parsedData.message;
       db.connect();
       // 'INSERT INTO employees SET ?', employee object
+
       db.query('INSERT into messages (username, message, roomname) VALUES(' + username + ', ' + message + ', ' + roomname + ')', function (err, rows, fields) {
+    
       //rows is an array
         callback(rows);
       });
@@ -36,6 +40,8 @@ module.exports = {
       db.end();
     },
     post: function (parsedUsername, callback) {
+      console.log('we are in post users');
+      console.log(parsedUsername);
       var username = parsedUsername.username;
       db.connect();
       db.query('INSERT INTO users (username) VALUES(' + username + ')', function (err, rows, fields) {

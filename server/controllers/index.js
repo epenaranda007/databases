@@ -16,30 +16,39 @@ var sendResponse = function(response, data, statusCode) {
 };
 
 var collectData = function(request, callback) {
+  console.log('we are in collect');
   var body = '';
-  request.on('data', function (chunk) {
-    body += chunk;
-  });
-  request.on('end', function() {
-    callback(JSON.parse(body));
-  });
+  callback(request.body);
+  // request.on('data', function (chunk) {
+  //   body += chunk;
+  // });
+  // request.on('end', function() {
+  //   console.log("at the end")
+  //   callback(JSON.parse(body));
+  // });
 };
 
 module.exports = {
   messages: {
     get: function (req, res) {
-      sendResponse(res, models.messages.get(function(data) {
-        return data;
-      }) );
+      sendResponse(res, models.messages.get(function(dbData) {
+        return dbData;
+      }));
     }, // a function which handles a get request for all messages
 
     post: function (req, res) {
-      collectData(req, function(data) {
-        console.log(data); 
-        console.log('in post messages') 
-        sendResponse(res, models.users.post(data, function(queryData) {
-          return queryData;
-        }) );
+      // var reqData = collectData(req, function(data) {
+      //   console.log(data)
+      //   return data;
+      // });
+      // models.messages.post(reqData, function(dbData) {
+      //   sendResponse(res, dbData);
+      // });
+
+      collectData(req, function(reqData) {
+        models.messages.post(reqData, function(dbData) {
+          sendResponse(res, dbData);
+        });
       });
     } // a function which handles posting a message to the database
 
@@ -54,11 +63,12 @@ module.exports = {
     },
 
     post: function (req, res) {
-      collectData(req, function(data) {
-        sendResponse(res, models.users.post(data, function(queryData) {
-          return queryData;
-        }) );
+      collectData(req, function(reqData) {
+        models.users.post(reqData, function(dbData) {
+          sendResponse(res, dbData);
+        });
       });
+
     }
 
   }

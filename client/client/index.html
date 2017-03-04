@@ -1,0 +1,50 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>chatterbox</title>
+    <link rel="stylesheet" href="styles/styles.css">
+
+    <!-- dependencies -->
+    <script src="bower_components/jquery/dist/jquery.js"></script>
+    <script>
+      // YOU DO NOT NEED TO EDIT THIS CODE
+      if (!/(&|\?)username=/.test(window.location.search)) {
+        var newSearch = window.location.search;
+        if (newSearch !== '' & newSearch !== '?') {
+          newSearch += '&';
+        }
+        newSearch += 'username=' + (prompt('What is your name?') || 'anonymous');
+        window.location.search = newSearch;
+      }
+    </script>
+    <!-- your scripts -->
+    <script src="scripts/app.js"></script>
+  </head>
+  <body>
+    <div id="main">
+      <h1>Chatterbox</h1>
+      <!-- Your HTML goes here! -->
+      <!-- <div class="spinner"><img src="client/images/spiffygif_46x46.gif"></div> -->
+      <div id="rooms">
+        Room:
+        <select id="roomSelect">
+        </select>
+        <button name = 'button' id = 'refresh'>Refresh Messages</button>
+      </div>
+      <div id='header'>
+        <span class = 'friendsCounter'>Friends: <span class = 'length'></span></span>
+        <button name = 'button' id = 'showFriends'>Show Friends</button>
+        <ul class = 'friendsList'></ul>
+      </div> 
+      <form action="#" id="room" method="post">
+        <input type="text" name="message" id="roomText" placeholder="Write New Roomname Here and Submit Below" />
+      </form> 
+      <form action="#" id="send" method="post">
+        <input type="text" name="message" id="message"/>
+        <input type="submit" name="submit" class="submit"/>
+      </form>
+      <div id="chats"></div>    
+    </div>
+  </body>
+</html>
