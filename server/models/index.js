@@ -8,13 +8,15 @@ module.exports = {
     get: function (callback) {
       // TODO: change the query later
       db.query('SELECT * FROM messages', function (err, rows, fields) {
-      //rows is an array
+        console.log('get rows', rows);
+        if(err) {
+          console.log(err);
+        }
         callback(rows);
       });
     }, // a function which produces all the messages
 
     post: function (message, callback) {
-      console.log(message)
       console.log('we are in post messages');
       // db.connect();
       // message.message = JSON.stringify(message.message);
@@ -29,10 +31,11 @@ module.exports = {
 
   users: {
     // Ditto as above.
-    get: function () {
-      // db.connect();
-
-      // db.end();
+    get: function (callback) {  
+      db.query('SELECT * FROM messages', function (err, rows, fields) {
+      //rows is an array
+        callback(rows);
+      });
     },
     post: function (username, callback) {
       console.log('we are in post users');

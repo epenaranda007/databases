@@ -12,16 +12,15 @@ var headers = {
 var sendResponse = function(response, data, statusCode) {
   statusCode = statusCode || 200;
   response.writeHead(statusCode, headers);
-  console.log('in send response', data);
   response.end(data);
 };
 
 module.exports = {
   messages: {
     get: function (req, res) {
-      sendResponse(res, models.messages.get(function(dbData) {
-        return dbData;
-      }));
+      models.messages.get(function(dbData) {
+        sendResponse(res, JSON.stringify(dbData));
+      });
     }, // a function which handles a get request for all messages
 
     post: function (req, res) {
@@ -35,9 +34,9 @@ module.exports = {
   users: {
     // Ditto as above
     get: function (req, res) {
-      sendResponse(res, models.users.get(function(data) {
-        return data;
-      }) );
+      models.users.get(function(dbData) {
+        sendResponse(res, JSON.stringify(dbData));
+      });
     },
 
     post: function (req, res) {
