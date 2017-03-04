@@ -6,48 +6,42 @@ var db = require('../db');
 module.exports = {
   messages: {
     get: function (callback) {
-      db.connect();
       // TODO: change the query later
       db.query('SELECT * FROM messages', function (err, rows, fields) {
       //rows is an array
         callback(rows);
       });
-      db.end();
     }, // a function which produces all the messages
-    post: function (parsedData, callback) {
-      console.log('we are in post messages');
-      console.log(parsedData);
-      var username = parsedData.username;
-      var roomname = parsedData.roomname;
-      var message = parsedData.message;
-      db.connect();
-      // 'INSERT INTO employees SET ?', employee object
 
-      db.query('INSERT into messages (username, message, roomname) VALUES(' + username + ', ' + message + ', ' + roomname + ')', function (err, rows, fields) {
-    
-      //rows is an array
-        callback(rows);
+    post: function (message, callback) {
+      console.log(message)
+      console.log('we are in post messages');
+      // db.connect();
+      // message.message = JSON.stringify(message.message);
+      var query = db.query('INSERT INTO messages SET ?', message, function (err, rows, fields) {
+        console.log('we are in the query', err);
+        callback(fields);
       });
-      db.end();
+      console.log(query.sql);
+      // db.end();
     } // a function which can be used to insert a message into the database
   },
 
   users: {
     // Ditto as above.
     get: function () {
-      db.connect();
+      // db.connect();
 
-      db.end();
+      // db.end();
     },
-    post: function (parsedUsername, callback) {
+    post: function (username, callback) {
       console.log('we are in post users');
-      console.log(parsedUsername);
-      var username = parsedUsername.username;
-      db.connect();
-      db.query('INSERT INTO users (username) VALUES(' + username + ')', function (err, rows, fields) {
-        callback(rows);
+      console.log(username);
+      // db.connect();
+      db.query('INSERT INTO users SET ?', username, function (err, rows, fields) {
+        callback(fields);
       });
-      db.end();
+      // db.end();
     }
   }
 };

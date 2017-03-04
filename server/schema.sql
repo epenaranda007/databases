@@ -10,34 +10,45 @@ CREATE DATABASE chat;
 USE chat;
 
 /* Create other tables and define schemas for them here! */
-CREATE TABLE rooms (
-  id INT AUTO_INCREMENT,
-  roomname VARCHAR(20),
-  PRIMARY KEY (id)
-);
+-- CREATE TABLE rooms (
+--   id INT AUTO_INCREMENT,
+--   roomname VARCHAR(20),
+--   PRIMARY KEY (id)
+-- );
 
 CREATE TABLE users (
   id INT AUTO_INCREMENT,
-  username VARCHAR(20),
+  username VARCHAR(20) NOT NULL,
   PRIMARY KEY(id)
 );
 
+-- CREATE TABLE messages (
+--   id INT AUTO_INCREMENT,
+--   username INT,
+--   message VARCHAR(20),
+--   roomname INT,
+--   PRIMARY KEY (id), 
+--   FOREIGN KEY (username) REFERENCES users(id),
+--   FOREIGN KEY (roomname) REFERENCES rooms(id)
+-- );
+
 CREATE TABLE messages (
   id INT AUTO_INCREMENT,
-  username INT,
-  message VARCHAR(20),
-  roomname INT,
-  PRIMARY KEY (id), 
-  FOREIGN KEY (username) REFERENCES users(id),
-  FOREIGN KEY (roomname) REFERENCES rooms(id)
+  username VARCHAR(50) NOT NULL,
+  message VARCHAR(255) NOT NULL,
+  roomname VARCHAR(50) NOT NULL,
+  PRIMARY KEY (id)
 );
 
 SHOW tables;
-DESCRIBE rooms;
+
+-- INSERT into messages(username,message,roomname) VALUES ('Valjean', 'In mercy\s name, three dayas is all I need.','Hello');
+
+-- DESCRIBE rooms;
 DESCRIBE users;
 DESCRIBE messages;
 
-SELECT * FROM rooms;
+-- SELECT * FROM rooms;
 SELECT * FROM users;
 SELECT * FROM messages;
 
