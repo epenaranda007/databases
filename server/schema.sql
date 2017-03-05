@@ -2,9 +2,6 @@
 DROP DATABASE chat;
 
 
-
-
-
 CREATE DATABASE chat;
 
 USE chat;
@@ -18,25 +15,21 @@ USE chat;
 
 CREATE TABLE users (
   id INT AUTO_INCREMENT,
-  username VARCHAR(20) NOT NULL,
+  username VARCHAR(50) NOT NULL,
   PRIMARY KEY(id)
 );
 
--- CREATE TABLE messages (
---   id INT AUTO_INCREMENT,
---   username INT,
---   message VARCHAR(20),
---   roomname INT,
---   PRIMARY KEY (id), 
---   FOREIGN KEY (username) REFERENCES users(id),
---   FOREIGN KEY (roomname) REFERENCES rooms(id)
--- );
+CREATE TABLE rooms (
+  id INT AUTO_INCREMENT,
+  roomname VARCHAR(50) NOT NULL,
+  PRIMARY KEY(id)
+);
 
 CREATE TABLE messages (
   id INT AUTO_INCREMENT,
-  username VARCHAR(50) NOT NULL,
+  username_id INT NOT NULL,
   message VARCHAR(255) NOT NULL,
-  roomname VARCHAR(50) NOT NULL,
+  roomname_id INT NOT NULL,
   PRIMARY KEY (id)
 );
 

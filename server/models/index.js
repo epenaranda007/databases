@@ -6,45 +6,55 @@ var db = require('../db');
 module.exports = {
   messages: {
     get: function (callback) {
-      // TODO: change the query later
-      db.query('SELECT * FROM messages', function (err, rows, fields) {
-        console.log('get rows', rows);
-        if(err) {
+      // must structure query to only return user/user.ids that correspond to the messages
+      var queryString = 'select messages.id, messages.message, users.username, rooms.roomname\
+                        from messages inner join users inner join rooms on (messages.username_id = users.id AND \
+                        messages.roomname_id = rooms.id)\
+                        ';
+      var query = db.query(queryString, function (err, results) {
+        if (err) {
           console.log(err);
         }
-        callback(rows);
+        callback(results);
       });
     }, // a function which produces all the messages
 
     post: function (message, callback) {
-      console.log('we are in post messages');
-      // db.connect();
-      // message.message = JSON.stringify(message.message);
-      var query = db.query('INSERT INTO messages SET ?', message, function (err, rows, fields) {
-        console.log('we are in the query', err);
-        callback(fields);
+      var params = [message.message, message.username, message.roomname];
+      var queryString = 'INSERT into messages(message, username_id, roomname_id)\
+                        VALUES (?,(select id from users where username = ? LIMIT 1), \
+                        (select id from rooms where roomname = ? LIMIT 1))\
+                        ';
+      var query = db.query(queryString, params, function (err, results) {
+        callback(results);
       });
-      console.log(query.sql);
-      // db.end();
     } // a function which can be used to insert a message into the database
   },
 
   users: {
     // Ditto as above.
     get: function (callback) {  
-      db.query('SELECT * FROM messages', function (err, rows, fields) {
-      //rows is an array
-        callback(rows);
+      db.query('SELECT * FROM messages', function (err, results) {
+        callback(results);
       });
     },
     post: function (username, callback) {
-      console.log('we are in post users');
-      console.log(username);
-      // db.connect();
-      db.query('INSERT INTO users SET ?', username, function (err, rows, fields) {
-        callback(fields);
+      db.query('INSERT INTO users SET ?', username, function (err, results) {
+        callback(results);
       });
-      // db.end();
+    }
+  },
+
+  rooms: {
+    get: function (callback) {  
+      db.query('SELECT * FROM rooms', function (err, results) {
+        callback(results);
+      });
+    },
+    post: function (roomname, callback) {
+      db.query('INSERT INTO rooms SET ?', roomname, function (err, results) {
+        callback(results);
+      });
     }
   }
 };
